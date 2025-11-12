@@ -1,0 +1,39 @@
+{
+  "name": "moonlight-reads-ecommerce-webapp",
+  "version": "1.0.0",
+  "description": "Moonlight Reads is designed to offer a modern online bookstore experience for passionate readers. Users can explore a vast collection of books, add favorites to their wishlist, manage their cart, and place orders effortlessly. Admins can efficiently manage books, users, and orders to ensure a smooth and enjoyable reading journey for every customer.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adhilunnikrishnan/Moonlight-Reads-Ecommerce-WebApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adhilunnikrishnan/Moonlight-Reads-Ecommerce-WebApp/issues"
+  },
+  "homepage": "https://github.com/adhilunnikrishnan/Moonlight-Reads-Ecommerce-WebApp#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.0.0",
+    "morgan": "^1.10.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
