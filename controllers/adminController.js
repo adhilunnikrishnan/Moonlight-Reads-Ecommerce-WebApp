@@ -19,3 +19,31 @@ export const adminLogout = (req, res) => {
     return res.redirect("/admin");
   }
 };
+
+export const adminDashboardPage = async (req, res) => {
+  try {
+
+    // Render dashboard
+    res.render("admin/dashboard", {
+      layout: "admin",
+      title: "Admin Dashboard",
+    });
+  } catch (error) {
+    // console.error("Error loading admin dashboard:", error);
+    res.status(500).send("Something went wrong loading the dashboard.");
+  }
+};
+
+export const addProductPage = async (req, res) => {
+  try {
+
+    // Render dashboard
+    res.render("admin/addProduct", {
+      layout: "admin",
+      title: "Admin - Add Product",
+    });
+  } catch (error) {
+    // console.error("Error loading admin dashboard:", error);
+    res.status(500).send("Something went wrong loading the dashboard.");
+  }
+};
