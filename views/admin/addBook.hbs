@@ -1,0 +1,166 @@
+<section class="content-main">
+  {{!-- <form action="/admin/books/add" method="POST" enctype="multipart/form-data"> --}}
+  <form action="/admin/books/add" method="POST">
+    <div class="row">
+
+      <!-- HEADER -->
+      <div class="col-9">
+        <div class="content-header">
+          <h2 class="content-title">Add New Book</h2>
+          <div>
+
+            <button type="submit"
+              class="btn btn-md rounded font-sm hover-up">
+              Publish
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEFT SIDE (Basic information) -->
+      <div class="col-lg-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Basic</h4>
+          </div>
+
+          <div class="card-body">
+
+            <!-- BOOK TITLE -->
+            <div class="mb-4">
+              <label for="title" class="form-label">Book Title</label>
+              <input type="text" id="title" name="title" placeholder="Type here"
+                class="form-control" required />
+            </div>
+
+            <!-- SHORT DESC -->
+            <div class="mb-4">
+              <label for="shortDesc" class="form-label">Short Description</label>
+              <input type="text" id="shortDesc" name="shortDesc"
+                placeholder="Short description" class="form-control" />
+            </div>
+
+            <!-- FULL DESC -->
+            <div class="mb-4">
+              <label for="description" class="form-label">Full Description</label>
+              <textarea name="description" id="description" placeholder="Type here"
+                class="form-control" rows="4"></textarea>
+            </div>
+
+            <!-- PRICES -->
+            <div class="row">
+              <!-- REGULAR PRICE -->
+              <div class="col-lg-4">
+                <div class="mb-4">
+                  <label for="regularPrice" class="form-label">Regular Price</label>
+                  <input type="number" id="regularPrice" name="regularPrice"
+                    placeholder="₹" step="0.01" class="form-control" required />
+                </div>
+              </div>
+
+              <!-- PROMOTIONAL PRICE -->
+              <div class="col-lg-4">
+                <div class="mb-4">
+                  <label for="discountPrice" class="form-label">Discount Price</label>
+                  <input type="number" id="discountPrice" name="discountPrice"
+                    placeholder="₹" step="0.01" class="form-control" />
+                </div>
+              </div>
+
+              <!-- STOCK -->
+              <div class="col-lg-4">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" id="stock" name="stock" class="form-control"
+                  min="0" placeholder="Quantity" required />
+              </div>
+            </div>
+
+            <!-- RATING + STATUS -->
+            <div class="row">
+              <!-- RATING -->
+              <div class="col-lg-6">
+                <div class="mb-4">
+                  <label for="rating" class="form-label">Rating</label>
+                  <input type="number" id="rating" name="rating"
+                    placeholder="1 to 5" min="1" max="5" step="0.1"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <!-- STATUS -->
+              <div class="col-lg-6">
+                <div class="mb-4">
+                  <label for="status" class="form-label">Status</label>
+                  <select name="status" id="status" class="form-select">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE (Media + Organization) -->
+      <div class="col-lg-3">
+
+        <!-- MEDIA UPLOAD -->
+        {{!-- <div class="card mb-4">
+          <div class="card-header">
+            <h4>Media</h4>
+          </div>
+
+          <div class="card-body">
+            <div class="input-upload">
+              <img src="/adminAssets/imgs/theme/upload.svg" alt="" />
+              <input class="form-control" type="file" name="image" required />
+            </div>
+          </div>
+        </div> --}}
+
+        <!-- ORGANIZATION -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Classification</h4>
+          </div>
+
+          <div class="card-body">
+            <div class="row gx-2">
+
+              <!-- CATEGORY -->
+              <div class="col-sm-6 mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="category" class="form-select">
+                  <option value="Manga">Manga</option>
+                  <option value="Fiction">Fiction</option>
+                </select>
+              </div>
+
+              <!-- PUBLISHER -->
+              <div class="col-sm-6 mb-3">
+                <label for="publisher" class="form-label">Publisher</label>
+                <select id="publisher" name="publisher" class="form-select">
+                  <option value="VIZ Media">VIZ Media</option>
+                  <option value="Marvel Comics">Marvel Comics</option>
+                  <option value="DC Comics">DC Comics</option>
+                </select>
+              </div>
+
+              <!-- AUTHOR -->
+              <div class="mb-4">
+                <label for="author" class="form-label">Author</label>
+                <input type="text" id="author" name="author"
+                  class="form-control" required />
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </form>
+</section>

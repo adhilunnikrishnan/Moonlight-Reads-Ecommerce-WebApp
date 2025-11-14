@@ -1,6 +1,6 @@
 let collection = {
   USERS_COLLECTION: "users",
-  PRODUCTS_COLLECTION: "products",
+  BOOKS_COLLECTION: "books",
   CART_COLLECTION: "cart",
   ORDERS_COLLECTION: "orders",
   WISHLIST_COLLECTION: "wishlist",
