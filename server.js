@@ -28,7 +28,7 @@ app.use(cors());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(compression());
 
 /* STATIC FILES */

@@ -38,7 +38,7 @@
             <div class="card-header">
               <img
                 class="img-md img-avatar"
-                src="/adminAssets/imgs/people/avatar1.jpg"
+                src={{this.images.[0]}}
                 alt="Book pic"
               />
             </div>
@@ -108,7 +108,7 @@
               </div>
               <!-- Button -->
               <div class="mt-20 d-flex" style="gap: 12px;">
-                <a href="#" class="btn btn-sm font-sm rounded btn-brand">
+                <a href="/admin/books/edit/{{this._id}}" class="btn btn-sm font-sm rounded btn-brand">
                   <i class="material-icons md-edit"></i>
                   Edit
                 </a>

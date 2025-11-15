@@ -1,3 +1,4 @@
+import { v7 as uuidv7 } from "uuid";
 import connectDB from "../config/db.js";
 import collection from "../config/collection.js";
 
@@ -23,6 +24,7 @@ export const adminLogout = (req, res) => {
 };
 
 export const adminDashboardPage = async (req, res) => {
+
   try {
     // Render dashboard
     res.render("admin/dashboard", {
@@ -50,6 +52,7 @@ export const addBookPage = async (req, res) => {
 
 export const addBook = async (req, res) => {
   console.log(">>>>>>>>>>>>>>>>>add book function called", req.body);
+  console.log(">>>>>>>>>>req.files",req.files)
 
   try {
     const {
@@ -81,12 +84,20 @@ export const addBook = async (req, res) => {
     const numericStock = Number(stock);
     const numericRating = Number(rating);
 
+     const pictures = req.files.map(
+      (file) => `/userAssets/uploads/${file.filename}`
+    );
+    console.log("pictures>>>",pictures);
+
+      const booksId = uuidv7()
+
     // Insert into DB
     const db = await connectDB();
 
     const result = await db
       .collection(collection.BOOKS_COLLECTION)
       .insertOne({
+        booksId,
         title,
         shortDesc,
         description,
@@ -98,6 +109,7 @@ export const addBook = async (req, res) => {
         category,
         publisher,
         author,
+        images:pictures,
         createdAt: new Date(),
       });
 
@@ -120,7 +132,7 @@ export const bookListPage = async (req, res) => {
     const db = await connectDB()
 
     const allBooksData = await db.collection(collection.BOOKS_COLLECTION).find({}).toArray()
-    console.log(">>>>>>>>>>>>>>allBooksData", allBooksData)
+    // console.log(">>>>>>>>>>>>>>allBooksData", allBooksData)
     // Render dashboard 
     res.render("admin/bookslist", {
       layout: "admin",
@@ -132,3 +144,4 @@ export const bookListPage = async (req, res) => {
     res.status(500).send("Something went wrong loading the dashboard.");
   }
 };
+
