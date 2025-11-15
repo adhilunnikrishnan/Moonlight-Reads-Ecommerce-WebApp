@@ -1,8 +1,8 @@
 <section class="content-main">
   <div class="content-header">
-    <h2 class="content-title">Book List</h2>
+    <h2 class="content-title">Books List</h2>
     <div>
-      <a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i>
+      <a href="/admin/add-book" class="btn btn-primary"><i class="material-icons md-plus"></i>
         Create new</a>
     </div>
   </div>
@@ -32,29 +32,100 @@
     <!-- card-header end// -->
     <div class="card-body">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
+{{#each booksData}}
         <div class="col">
           <div class="card card-user">
             <div class="card-header">
               <img
                 class="img-md img-avatar"
-                src="/adminAssets/imgs/people/avatar2.jpg"
-                alt="User pic"
+                src="/adminAssets/imgs/people/avatar1.jpg"
+                alt="Book pic"
               />
             </div>
             <div class="card-body">
-              <h5 class="card-title mt-50">Leslie Alexander</h5>
-              <div class="card-text text-muted">
-                <p class="m-0">Seller ID: #478</p>
-                <p>leslie@example.com</p>
-                <a
-                  href="#"
-                  class="btn btn-sm btn-brand rounded font-sm mt-15"
-                >View details</a>
+
+              <!-- Title -->
+              <span
+                title="Naruto Uzumaki is a mischievous and energetic young ninja who dreams of becoming the Hokage..."
+              >
+                <h5 class="card-title mt-50">{{this.title}}</h5>
+              </span>
+              <div class="card-text" style="text-align: left;">
+
+                <!-- Author -->
+                <p style="margin: 0;">
+                  <span style="font-weight: 800; color:#ba0e0e;">Author:</span>
+                  {{this.author}}
+                </p>
+
+                <!-- Category -->
+                <p style="margin: 2px 0 6px 0;">
+                  <span
+                    style="font-weight: 800; color:#db3e3e;"
+                  >Category:</span>
+                  {{this.category}}
+                </p>
+
+                <!-- Publisher -->
+                <p style="margin: 0;">
+                  <span
+                    style="font-weight: 800; color:#db3e3e;"
+                  >Publisher:</span>
+                  {{this.publisher}}
+                </p>
+
+                <!-- Stock -->
+                <p style="margin: 4px 0;">
+                  <span style="font-weight: 800; color:#ff9800;">Stock:</span>
+                  {{this.stock}}
+                </p>
+
+                <!-- Status -->
+                <p style="margin: 4px 0;">
+                  <span style="font-weight: 800; color:#6c757d;">Status:</span>
+                  {{this.status}}
+                </p>
+
+                <!-- Rating -->
+                <p style="margin: 0;">
+                  ⭐
+                  <span style="font-weight: 600;">{{this.rating}}</span>
+                  / 5
+                </p>
+
               </div>
+
+              <!-- Price Section -->
+              <div style="margin: 8px 0;">
+                <span style="font-weight: 700; color:#28a745; font-size:1rem;">
+                  ₹{{this.discountPrice}}
+                </span>
+                <span
+                  style="text-decoration: line-through; color:#999; margin-left: 6px;"
+                >
+                  ₹{{this.regularPrice}}
+                </span>
+              </div>
+              <!-- Button -->
+              <div class="mt-20 d-flex" style="gap: 12px;">
+                <a href="#" class="btn btn-sm font-sm rounded btn-brand">
+                  <i class="material-icons md-edit"></i>
+                  Edit
+                </a>
+
+                <a href="#" class="btn btn-sm font-sm btn-light rounded">
+                  <i class="material-icons md-delete_forever"></i>
+                  Delete
+                </a>
+              </div>
+
             </div>
+
           </div>
         </div>
         <!-- col.// -->
+{{/each}}
+
       </div>
       <!-- row.// -->
     </div>

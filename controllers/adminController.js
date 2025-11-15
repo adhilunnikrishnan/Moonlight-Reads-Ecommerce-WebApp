@@ -117,10 +117,15 @@ export const addBook = async (req, res) => {
 
 export const bookListPage = async (req, res) => {
   try {
-    // Render dashboard
+    const db = await connectDB()
+
+    const allBooksData = await db.collection(collection.BOOKS_COLLECTION).find({}).toArray()
+    console.log(">>>>>>>>>>>>>>allBooksData", allBooksData)
+    // Render dashboard 
     res.render("admin/bookslist", {
       layout: "admin",
       title: "Admin - Book List",
+      booksData:allBooksData
     });
   } catch (error) {
     // console.error("Error loading admin dashboard:", error);
