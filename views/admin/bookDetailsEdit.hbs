@@ -1,5 +1,5 @@
 <section class="content-main">
-  <form action="/admi" method="POST" enctype="multipart/form-data">
+  <form action="/admin/books/edit/{{bookDetails._id}}" method="POST">
     {{! <form action="/admin/books/add" method="POST"> }}
     <div class="row">
 
@@ -136,15 +136,15 @@
               </div>
 
               <!-- STATUS -->
-              <div class="col-lg-6">
-                <div class="mb-4">
-                  <label for="status" class="form-label">Status</label>
-                  <select name="status" id="status" class="form-select">
-                  <option value="active" {{#ifEquals product.status "active"}}selected{{/ifEquals}}>Active</option>
-                    <option value="inactive" {{#ifEquals product.status "inactive"}}selected{{/ifEquals}}>Inactive</option>
-                  </select>
+                <div class="col-lg-6">
+                  <div class="mb-4">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select">
+                    <option value="active" {{#ifEquals bookDetails.status "active"}}selected{{/ifEquals}}>Active</option>
+                      <option value="inactive" {{#ifEquals bookDetails.status "inactive"}}selected{{/ifEquals}}>Inactive</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
             </div>
 
           </div>
@@ -155,7 +155,7 @@
       <div class="col-lg-3">
 
         <!-- MEDIA UPLOAD -->
-        <div class="card mb-4">
+        {{!-- <div class="card mb-4">
           <div class="card-header">
             <h4>Media</h4>
           </div>
@@ -172,7 +172,7 @@
               />
             </div>
           </div>
-        </div>
+        </div> --}}
 
         <!-- ORGANIZATION -->
         <div class="card mb-4">
@@ -185,12 +185,19 @@
 
               <!-- CATEGORY -->
               <div class="col-sm-6 mb-3">
-                <label for="category" class="form-label">Category</label>
-                <select id="category" name="category" class="form-select">
-                  <option value="Manga">Manga</option>
-                  <option value="Fiction">Fiction</option>
-                </select>
+                  <label for="category" class="form-label">Category</label>
+                  <select name="category" id="category" class="form-control">
+                    <option value="">Select category</option>
+                    <option value="manga" {{#ifEquals bookDetails.category "manga"}}selected{{/ifEquals}}>Manga</option>
+                    <option value="Fiction" {{#ifEquals bookDetails.category "Fiction"}}selected{{/ifEquals}}>Fiction</option>
+                    <option value="Self-Help" {{#ifEquals bookDetails.category "Self-Help"}}selected{{/ifEquals}}>Self-Help</option>
+                    <option value="Comics" {{#ifEquals bookDetails.category "Comics"}}selected{{/ifEquals}}>Comics</option>
+                  </select>
+
+                
               </div>
+
+
 
               <!-- PUBLISHER -->
               <div class="col-sm-6 mb-3">
@@ -199,6 +206,9 @@
                   <option value="VIZ Media">VIZ Media</option>
                   <option value="Marvel Comics">Marvel Comics</option>
                   <option value="DC Comics">DC Comics</option>
+                  <option value="Plata Publishing">Plata Publishing</option>
+                  <option value="Penguin Books">Penguin Books</option>
+
                 </select>
               </div>
 
@@ -211,6 +221,7 @@
                   name="author"
                   class="form-control"
                   required
+                  value="{{bookDetails.author}}"
                 />
               </div>
 

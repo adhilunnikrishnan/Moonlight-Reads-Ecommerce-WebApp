@@ -73,6 +73,7 @@ await connectDB();
 /* ROUTES */
 app.use("/admin", adminRoutes);
 
+
 // app.use(errorHandler); // if needed
 
 /* START SERVER */

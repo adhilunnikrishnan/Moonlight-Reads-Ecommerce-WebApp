@@ -9,7 +9,11 @@ import {
 } from "../controllers/adminController.js";
 import { adminLogin } from "../controllers/adminAuth.js";
 import { uploadFiles } from "../middleware/uploadMiddelware.js";
-import { editBookDetails, editBookDetailsPage } from "../controllers/booksController.js";
+import {
+  deleteBook,
+  editBookDetails,
+  editBookDetailsPage,
+} from "../controllers/booksController.js";
 
 const adminRoutes = Router({ mergeParams: true });
 
@@ -23,14 +27,21 @@ adminRoutes.get("/dashboard", adminDashboardPage);
 
 adminRoutes.get("/add-book", addBookPage);
 
-adminRoutes.post("/books/add",
+adminRoutes.post(
+  "/books/add",
   uploadFiles("userAssets/uploads", "multiple", "bookImage", 3),
-  addBook);
+  addBook
+);
 
 adminRoutes.get("/books/list", bookListPage);
 
-adminRoutes.get("/books/edit/:id", editBookDetailsPage)
+adminRoutes.get(
+  "/books/edit/:id",
+  editBookDetailsPage
+);
 
-adminRoutes.post("/books/:id/edit", editBookDetails)
+adminRoutes.post("/books/edit/:id", editBookDetails);
+
+adminRoutes.post("/books/:id/delete", deleteBook)
 
 export default adminRoutes;
