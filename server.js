@@ -10,6 +10,7 @@ import { engine } from "express-handlebars";
 import connectDB from "./config/db.js";
 import adminRoutes from "./routes/adminRouts.js";
 import compression from "compression";
+import userRoutes from "./routes/userRoutes.js";
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -73,7 +74,7 @@ await connectDB();
 /* ROUTES */
 app.use("/admin", adminRoutes);
 
-
+app.use("/", userRoutes)
 // app.use(errorHandler); // if needed
 
 /* START SERVER */

@@ -69,3 +69,57 @@ console.log(bookId)
     res.status(500).send("Failed to delete the book.");
   }
 };
+
+
+/**
+ * Fetch books from the database with optional filters, sorting, and limit
+ * @param {Object} options - Options for fetching books
+ * @param {string} [options.category] - Filter by category (e.g. "men", "women")
+ * @param {string} [options.publisher] - Filter by publisher (e.g. "Rolex")
+ * @param {string} [options.sort] - Sort type ("latest", "oldest", "random")
+ * @param {number} [options.limit] - Max number of books to return
+ * @returns {Promise<Array>} - Array of books
+ */
+
+export const getBooksData = async (options = {}) => {
+  try {
+    const db = await connectDB();
+
+    // Build filter dynamically
+    const filter = {};
+    if (options.category) filter.category = options.category;
+    if (options.publisher) filter.publisher = options.publisher;
+
+    let books;
+
+    // If sort = random → use aggregation to return random books
+    if (options.sort === "random") {
+      books = await db
+        .collection(collection.BOOKS_COLLECTION)
+        .aggregate([
+          { $match: filter },
+          { $sample: { size: options.limit || 20 } },
+        ])
+        .toArray();
+    } else {
+      let sortOption = { createdAt: -1 };
+      if (options.sort === "oldest") sortOption = { createdAt: 1 };
+
+      let query = db
+        .collection(collection.BOOKS_COLLECTION)
+        .find(filter)
+        .sort(sortOption);
+
+      if (options.limit) {
+        query = query.limit(parseInt(options.limit));
+      }
+
+      books = await query.toArray();
+    }
+
+    return books;
+  } catch (error) {
+    throw error;
+  }
+};
+
