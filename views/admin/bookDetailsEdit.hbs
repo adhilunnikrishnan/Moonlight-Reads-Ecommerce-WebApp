@@ -38,7 +38,19 @@
                 value="{{bookDetails.title}}"
                 required
               />
+            </div>
 
+            <div class="mb-4">
+              <label for="title" class="form-label">Short Title</label>
+              <input
+                type="text"
+                id="shortTitle"
+                name="shortTitle"
+                placeholder="Type here"
+                class="form-control"
+                value="{{bookDetails.shortTitle}}"
+                required
+              />
             </div>
 
             <!-- SHORT DESC -->
@@ -188,7 +200,7 @@
                   <label for="category" class="form-label">Category</label>
                   <select name="category" id="category" class="form-control">
                     <option value="">Select category</option>
-                    <option value="manga" {{#ifEquals bookDetails.category "manga"}}selected{{/ifEquals}}>Manga</option>
+                    <option value="Manga" {{#ifEquals bookDetails.category "Manga"}}selected{{/ifEquals}}>Manga</option>
                     <option value="Fiction" {{#ifEquals bookDetails.category "Fiction"}}selected{{/ifEquals}}>Fiction</option>
                     <option value="Self-Help" {{#ifEquals bookDetails.category "Self-Help"}}selected{{/ifEquals}}>Self-Help</option>
                     <option value="Comics" {{#ifEquals bookDetails.category "Comics"}}selected{{/ifEquals}}>Comics</option>
@@ -208,6 +220,8 @@
                   <option value="DC Comics">DC Comics</option>
                   <option value="Plata Publishing">Plata Publishing</option>
                   <option value="Penguin Books">Penguin Books</option>
+                     <option value="Doubleday">Doubleday</option>
+                  <option value="HarperCollins">HarperCollins</option>
 
                 </select>
               </div>
