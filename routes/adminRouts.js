@@ -6,6 +6,7 @@ import {
   adminLoginPage,
   adminLogout,
   bookListPage,
+  usersListPage,
 } from "../controllers/adminController.js";
 import { adminLogin } from "../controllers/adminAuth.js";
 import { uploadFiles } from "../middleware/uploadMiddelware.js";
@@ -26,6 +27,8 @@ adminRoutes.get("/logout", adminLogout);
 adminRoutes.get("/dashboard", adminDashboardPage);
 
 adminRoutes.get("/add-book", addBookPage);
+
+adminRoutes.get("/users-list", usersListPage)
 
 adminRoutes.post(
   "/books/add",

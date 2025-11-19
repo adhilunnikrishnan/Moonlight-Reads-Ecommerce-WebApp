@@ -59,38 +59,28 @@ export const publishersData = [
     link: "/shop-grid-right.html",
   },
   {
-    name: "Bloomsbury",
-    image: "/userAssets/imgs/Logos/bloomsbury.png",
-    link: "/shop-grid-right.html",
-  },
-  {
-    name: "Scholastic",
-    image: "/userAssets/imgs/Logos/scholastic.png",
-    link: "/shop-grid-right.html",
-  },
-  {
-    name: "Simon & Schuster",
-    image: "/userAssets/imgs/Logos/simon-schuster.png",
-    link: "/shop-grid-right.html",
-  },
-  {
-    name: "Macmillan Publishers",
-    image: "/userAssets/imgs/Logos/macmillan.png",
-    link: "/shop-grid-right.html",
-  },
-  {
-    name: "Hachette Book Group",
-    image: "/userAssets/imgs/Logos/hachette.png",
-    link: "/shop-grid-right.html",
-  },
-  {
     name: "VIZ Media",
-    image: "/userAssets/imgs/Logos/viz.png",
+    image: "/userAssets/imgs/Logos/viz media.png",
     link: "/shop-grid-right.html",
   },
   {
-    name: "Kodansha",
-    image: "/userAssets/imgs/Logos/kodansha.png",
+    name: "Marvel Comics",
+    image: "/userAssets/imgs/Logos/marvelcomics.png",
     link: "/shop-grid-right.html",
   },
+  {
+    name: "DC Comics",
+    image: "/userAssets/imgs/Logos/dc.png",
+    link: "/shop-grid-right.html",
+  },
+  {
+    name: "Doubleday",
+    image: "/userAssets/imgs/Logos/doubleday.png",
+    link: "/shop-grid-right.html",
+  },
+  {
+    name: "Plata Publisher ",
+    image: "/userAssets/imgs/Logos/plata.png",
+    link: "/shop-grid-right.html",
+  }
 ];

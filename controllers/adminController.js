@@ -145,3 +145,39 @@ export const bookListPage = async (req, res) => {
   }
 };
 
+export const usersListPage = async (req, res) => {
+  // console.log("Admin UserstList route working 🚀");
+  try {
+    const db = await connectDB(process.env.DATABASE);
+
+    let usersData = await db
+      .collection(collection.USERS_COLLECTION)
+      .find({})
+      .toArray();
+
+    // format createdAt before sending to HBS
+    usersData = usersData.map((user) => {
+      return {
+        ...user,
+        createdAtFormatted: new Date(user.createdAt).toLocaleDateString(
+          "en-GB"
+        ), // dd/mm/yyyy
+      };
+    });
+
+    // console.log("userData:", usersData);
+
+    res.render("admin/userList", {
+      layout: "admin",
+      title: "Admin - Users List",
+      usersData,
+    });
+  } catch (error) {
+    // console.error("Error fetching user data:", error);
+    res.render("admin/userList", {
+      layout: "admin",
+      title: "Admin - UsersList",
+      usersData: [],
+    });
+  }
+};
