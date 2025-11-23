@@ -5,6 +5,7 @@ import {
   adminDashboardPage,
   adminLoginPage,
   adminLogout,
+  blockUnblockUser,
   bookListPage,
   usersListPage,
 } from "../controllers/adminController.js";
@@ -46,5 +47,7 @@ adminRoutes.get(
 adminRoutes.post("/books/edit/:id", editBookDetails);
 
 adminRoutes.post("/books/:id/delete", deleteBook)
+
+adminRoutes.post("/block-user/:id", blockUnblockUser);
 
 export default adminRoutes;

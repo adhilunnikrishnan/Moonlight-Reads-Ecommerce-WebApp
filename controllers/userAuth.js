@@ -66,6 +66,7 @@ export const createUser = async (req, res) => {
   }
 };
 
+
 /* ------------------------------
         USER LOGIN
 ------------------------------ */
