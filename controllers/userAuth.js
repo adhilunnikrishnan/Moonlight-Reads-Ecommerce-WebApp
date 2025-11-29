@@ -71,6 +71,7 @@ export const createUser = async (req, res) => {
         USER LOGIN
 ------------------------------ */
 export const loginUser = async (req, res) => {
+  console.log("login user funtion called")
   try {
     const { email, password } = req.body;
 

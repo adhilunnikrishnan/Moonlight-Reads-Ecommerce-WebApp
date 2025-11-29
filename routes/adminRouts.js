@@ -5,6 +5,7 @@ import {
   adminDashboardPage,
   adminLoginPage,
   adminLogout,
+  // adminOrdersListPage,
   blockUnblockUser,
   bookListPage,
   usersListPage,
@@ -49,5 +50,7 @@ adminRoutes.post("/books/edit/:id", editBookDetails);
 adminRoutes.post("/books/:id/delete", deleteBook)
 
 adminRoutes.post("/block-user/:id", blockUnblockUser);
+
+// adminRoutes.get("/orders-list",adminOrdersListPage);
 
 export default adminRoutes;
