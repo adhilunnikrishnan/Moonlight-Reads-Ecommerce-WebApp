@@ -123,4 +123,38 @@ export const getBooksData = async (options = {}) => {
   }
 };
 
+export const bookViewPage = async (req, res) => {
+  try {
+    const db = await connectDB(process.env.DATABASE);
+
+    const bookId = req.query.id;
+
+    if (!bookId) {
+      return res.status(400).send("Book ID is required");
+    }
+
+    if (!ObjectId.isValid(bookId)) {
+      return res.status(400).send("Invalid Book ID");
+    }
+
+    const book = await db
+      .collection(collection.BOOKS_COLLECTION)
+      .findOne({ _id: new ObjectId(bookId) });
+
+    if (!book) {
+      return res.status(404).send("Book not found");
+    }
+
+    return res.render("user/bookView", {
+      title: book.title,
+      book,
+    });
+
+  } catch (error) {
+    console.log("❌ Error in bookViewPage:", error);
+    return res.status(500).send("Server error");
+  }
+};
+
+
 

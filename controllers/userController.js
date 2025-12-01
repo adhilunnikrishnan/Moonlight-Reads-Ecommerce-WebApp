@@ -37,7 +37,7 @@ export const homePage = async (req, res) => {
 
     let user = null;
     const token = req.cookies?.token;
-    console.log(token)
+    // console.log(token)
     if (token) {
       try {
         user = jwt.verify(token, process.env.JWT_SECRET);
@@ -46,7 +46,7 @@ export const homePage = async (req, res) => {
         user = null;
       }
     }
-    console.log(user)
+    console.log(user);
 
     res.render("user/homePage", {
       title: "Home - Moonligth Reads",
@@ -60,6 +60,56 @@ export const homePage = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send("Error loading home page");
+  }
+};
+
+export const booksPage = async (req, res) => {
+  try {
+    // Get logged-in user from JWT
+    let user = null;
+    const token = req.cookies?.token;
+
+    if (token) {
+      try {
+        user = jwt.verify(token, process.env.JWT_SECRET);
+      } catch (err) {
+        user = null;
+      }
+    }
+
+    // Fetch latest 20 books
+    const books = await getBooksData({
+      sort: "latest",
+      limit: 20,
+    });
+
+    // Add stock status for each book
+    const booksWithStock = books.map((book) => ({
+      ...book,
+      stockStatus: getStockStatus(book.stock), // book.stock is a STRING → handled below
+    }));
+
+    // Render the UI
+    res.render("user/books", {
+      title: "Books List",
+      products: booksWithStock, // HBS expects "products"
+      user,
+    });
+  } catch (error) {
+    console.error("❌ Error loading books page:", error);
+    res.status(500).send("Error loading books page");
+  }
+};
+
+const getStockStatus = (product) => {
+  const stock = parseInt(product.stock, 10); // ensure number
+
+  if (stock > 20) {
+    return `🟢 Available (${stock})`;
+  } else if (stock > 0 && stock <= 20) {
+    return `🟠 Hurry up! Only ${stock} left`;
+  } else {
+    return `🔴 Currently unavailable`;
   }
 };
 
@@ -82,63 +132,77 @@ export const signupPage = async (req, res) => {
 };
 
 export const cartPage = async (req, res) => {
+  // console.log(">>>>>>>>>>cartpage");
   try {
-    const userId = req.loggedInUser?.userId; // FIXED
-
+    const userId = req.loggedInUser?.id; // FIXED
+    // console.log(">>>>userId",userId)
     const db = await connectDB(process.env.DATABASE);
 
     const user = await db
       .collection(collection.USERS_COLLECTION)
       .findOne({ userId }); // FIXED
+    // console.log(">>>user",user)
 
-    const cart = user?.cart || [];
+    const userCart = user?.cart || [];
+    // console.log(">>>>usercart",userCart)
 
-    const subtotal = cart.reduce((acc, item) => acc + item.total, 0);
+    const subtotal = userCart.reduce((acc, item) => acc + item.total, 0);
 
     res.render("user/cart", {
       title: "Your Cart",
-      cart,
+      userCart,
       subtotal,
     });
   } catch (error) {
-    res.send("Something went wrong");
+    res.send("Something went wrong",error);
+    console.log(error)
   }
 };
 
 //add cart
 export const addToCart = async (req, res) => {
-  console.log(">>>> add to cart function called", req.body);
+  // console.log(">>>> add to cart function called", req.body);
 
   try {
     const userId = req.loggedInUser?.id;
-    const { booksId } = req.body; // changed from productId
+    const { booksId } = req.body;
 
     if (!userId) return res.redirect("/login");
 
     const db = await connectDB(process.env.DATABASE);
 
-    // Find user
+    // Fetch user
     const user = await db
       .collection(collection.USERS_COLLECTION)
       .findOne({ userId });
 
-    // Find book using booksId (NOT _id)
+    if (!user) return res.redirect("/login");
+
+    // Ensure cart array exists
+    if (!user.cart) user.cart = [];
+
+    // Fetch the book using booksId (NOT _id)
     const product = await db
       .collection(collection.BOOKS_COLLECTION)
       .findOne({ booksId });
 
     if (!product) return res.redirect("back");
 
-    // Convert string price → number
+    const stock = Number(product.stock);
     const price = Number(product.discountPrice || product.regularPrice);
 
-    // Check if item already in cart
-    const existingItem = user.cart?.find(
-      (item) => item.booksId === booksId
-    );
+    // Check existing item
+    const existingItem = user.cart.find((item) => item.booksId === booksId);
+
+    const currentQty = existingItem ? existingItem.quantity : 0;
+
+    // Prevent adding more than stock
+    if (currentQty + 1 > stock) {
+      return res.redirect(`/bookDetails?booksId=${booksId}&error=Out of stock`);
+    }
 
     if (existingItem) {
-      // Increase quantity
+      // Update quantity
       await db.collection(collection.USERS_COLLECTION).updateOne(
         { userId, "cart.booksId": booksId },
         {
@@ -149,7 +213,7 @@ export const addToCart = async (req, res) => {
         }
       );
     } else {
-      // Add new item to cart
+      // Create new cart item
       const newItem = {
         booksId,
         title: product.title,
@@ -162,15 +226,12 @@ export const addToCart = async (req, res) => {
 
       await db
         .collection(collection.USERS_COLLECTION)
-        .updateOne(
-          { userId },
-          { $push: { cart: newItem } }
-        );
+        .updateOne({ userId }, { $push: { cart: newItem } });
     }
 
     res.redirect("/cart");
   } catch (error) {
-    console.log("Add to Cart Error:", error);
+    console.error("Add to Cart Error:", error);
     res.redirect("/cart");
   }
 };

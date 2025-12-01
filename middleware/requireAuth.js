@@ -6,7 +6,8 @@ import jwt from "jsonwebtoken";
  * If valid, it attaches the user info to req.loggedInUser.
  * If invalid or missing, it redirects the user to /login.
  */
-export const requireAuth = (req, res, next) => {
+export const 
+requireAuth = (req, res, next) => {
   try {
     // 1️⃣ Get token from cookies
     const token = req.cookies.token;
@@ -18,6 +19,8 @@ export const requireAuth = (req, res, next) => {
 
     // 3️⃣ Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // console.log("dcoded>>>>>",decoded)
 
     // 4️⃣ Attach user info to request for use in routes or HBS templates
     req.loggedInUser = {
