@@ -238,8 +238,29 @@ export const addToCart = async (req, res) => {
   }
 };
 
-//remove selected product from cart
+//clear cart
+export const clearCart = async (req, res) => {
+  try {
+    const userId = req.loggedInUser?.id;
+    if (!userId) {
+      return res.redirect("/login");
+    }
 
+    const db = await connectDB(process.env.DATABASE);
+
+    // Clear the cart array
+    await db
+      .collection(collection.USERS_COLLECTION)
+      .updateOne({ userId }, { $set: { cart: [] } });
+
+    res.redirect("/cart"); // redirect back to landing page
+  } catch (error) {
+    // console.log("Error clearing cart:", error);
+    res.status(500).send("Something went wrong while clearing the cart");
+  }
+};
+
+//remove selected product from cart
 export const removeFromCart = async (req, res) => {
   try {
     const userId = req.loggedInUser?.id;
