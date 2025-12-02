@@ -125,6 +125,8 @@ export const getBooksData = async (options = {}) => {
 
 export const bookViewPage = async (req, res) => {
   try {
+  console.log(">>>>>>>bookview")
+
     const db = await connectDB(process.env.DATABASE);
 
     const bookId = req.query.id;
@@ -145,7 +147,7 @@ export const bookViewPage = async (req, res) => {
       return res.status(404).send("Book not found");
     }
 
-    return res.render("user/bookView", {
+    return res.render("user/bookViewPage", {
       title: book.title,
       book,
     });

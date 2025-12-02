@@ -1,0 +1,103 @@
+<main class="main">
+  <section class="mt-50 mb-50">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="row product-grid-3">
+
+            {{#if books.length}}
+              {{#each books}}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                  <div class="product-cart-wrap mb-30">
+
+                    <!-- Book Image -->
+                    <div class="product-img-action-wrap">
+                      <div class="product-img product-img-zoom">
+                        <a href="/bookDetails?id={{this.booksId}}">
+                          {{#if this.images}}
+                            <img class="default-img" src="{{this.images.[0]}}" alt="{{this.title}}" />
+                            <img class="hover-img" src="{{this.images.[0]}}" alt="{{this.title}}" />
+                          {{else}}
+                            <img class="default-img" src="/userAssets/imgs/default-product.png" alt="Book image" />
+                            <img class="hover-img" src="/userAssets/imgs/default-product.png" alt="Book image" />
+                          {{/if}}
+                        </a>
+                      </div>
+
+                      <!-- Wishlist -->
+                      {{#if ../user}}
+                        <div class="product-action-1">
+                          <form action="/add-to-wishlist" method="post">
+                            <input type="hidden" name="booksId" value="{{this.booksId}}" />
+                            <button type="submit"
+                              aria-label="Add To Wishlist"
+                              style="all: unset; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: #f0f0f0; cursor: pointer; transition: 0.3s;">
+                              <i class="fi-rs-heart" style="color: #333; font-size: 18px;"></i>
+                            </button>
+                          </form>
+                        </div>
+                      {{/if}}
+
+                      <!-- Category Badge -->
+                      <div class="product-badges product-badges-position product-badges-mrg">
+                        <span class="hot">{{this.category}}</span>
+                      </div>
+                    </div>
+
+                    <!-- Book Info -->
+                    <div class="product-content-wrap">
+                      <div class="product-category">
+                        <a href="#">{{this.category}}</a>
+                      </div>
+
+                      <h2>
+                        <a href="/bookDetails?id={{this.booksId}}">{{this.title}}</a>
+                      </h2>
+
+                      <div>
+                        <span style="font-size: 14px; color: #888;">By {{this.author}}</span>
+                      </div>
+
+                      <!-- Price -->
+                      <div class="product-price">
+                        {{#if this.discountPrice}}
+                          <span>₹{{this.discountPrice}}</span>
+                          <span class="old-price">₹{{this.regularPrice}}</span>
+                        {{else}}
+                          <span>₹{{this.regularPrice}}</span>
+                        {{/if}}
+                      </div>
+
+                      <!-- Add to Cart -->
+                      {{#if ../user}}
+                        <div class="product-action-1 show">
+                          <form action="/add-to-cart" method="post">
+                            <input type="hidden" name="booksId" value="{{this.booksId}}" />
+                            <input type="hidden" name="quantity" value="1" />
+
+                            <button type="submit"
+                              aria-label="Add To Cart"
+                              style="all: unset; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: #f0f0f0; cursor: pointer; transition: 0.3s;">
+                              <i class="fi-rs-shopping-bag-add"
+                                 style="color: #333; font-size: 18px;"></i>
+                            </button>
+                          </form>
+                        </div>
+                      {{/if}}
+                    </div>
+
+                  </div>
+                </div>
+              {{/each}}
+            {{else}}
+              <p>No books available right now.</p>
+            {{/if}}
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

@@ -3,8 +3,12 @@ import {
   addToCart,
   booksPage,
   cartPage,
+  checkoutPage,
+  createAddress,
   homePage,
   loginPage,
+  orderSuccess,
+  placeOrder,
   signupPage,
 } from "../controllers/userController.js";
 import { createUser, loginUser } from "../controllers/userAuth.js";
@@ -27,12 +31,24 @@ userRoutes.post("/create-user", createUser);
 
 userRoutes.get("/books", booksPage);
 
-userRoutes.get("/book/view", bookViewPage);
+userRoutes.get("/bookview", bookViewPage);
 
 
-userRoutes.get("/cart", requireAuth, cartPage); //requireAuth
+userRoutes.get("/cart", requireAuth, cartPage);
 
 userRoutes.post("/add-to-cart", requireAuth, addToCart);
+
+// userRoutes.get("/cart/remove/:productId", removeFromCart); //remove selected product from cart
+
+userRoutes.get("/checkout", checkoutPage);
+
+userRoutes.post("/create-address", createAddress);
+
+userRoutes.post("/place-order", placeOrder);
+
+
+userRoutes.get("/order-success", orderSuccess);
+
 
 
 
