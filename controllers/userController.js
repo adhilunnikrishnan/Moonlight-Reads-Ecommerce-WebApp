@@ -5,8 +5,7 @@ import connectDB from "../config/db.js";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { v7 as uuidv7 } from "uuid";
-
-
+import bcrypt from "bcrypt";
 import collection from "../config/collection.js";
 
 export const homePage = async (req, res) => {
@@ -516,4 +515,272 @@ export const orderSuccess = async (req, res) => {
       .send("Something went wrong while loading the order success page.");
   }
 };
+
+export const getOrderHistory = async (req, res) => {
+
+  try {
+    const userId = req.loggedInUser?.id;
+    if (!userId) return res.redirect("/login");
+
+    // Connect to database
+    const db = await connectDB(process.env.DATABASE);
+
+    // Fetch all orders for this user, newest first
+    const orders = await db
+      .collection(collection.ORDERS_COLLECTION)
+      .find({ userId })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    if (!orders || orders.length === 0) {
+      // console.log("No orders found for this user.");
+      return res.render("user/order-history", { orders: [] });
+    }
+
+    // Format orders: add cart totals and full totalAmount per order
+    const formattedOrders = orders.map((order) => {
+      const cartWithTotal = order.userCart.map((item) => ({
+        ...item,
+        total: item.total || item.price * item.quantity,
+      }));
+
+      const totalAmount = cartWithTotal.reduce(
+        (acc, item) => acc + item.total,
+        0
+      );
+
+      return {
+        ...order,
+        userCart: cartWithTotal,
+        totalAmount,
+      };
+    });
+
+    // ✅ Render the correct view inside "views/user/order-history.hbs"
+    res.render("user/order-history", { orders: formattedOrders });
+  } catch (error) {
+    // console.error("Error loading order history page:", error);
+    res.status(500).send("Something went wrong while loading order history.");
+  }
+};
+
+export const getAccount = async (req, res) => {
+  try {
+    const db = await connectDB(process.env.DATABASE);
+    const user = await db
+      .collection(collection.USERS_COLLECTION)
+      .findOne({ userId: req.loggedInUser.id });
+
+    res.render("user/account-details", {
+      title: "Account Details",
+      user, // send user data to prefill form
+    });
+  } catch (err) {
+    // console.error(err);
+    res.render("user/account-details", {
+      title: "Account Details",
+      error: "Failed to load account details.",
+    });
+  }
+};
+
+// POST update account
+export const updateAccount = async (req, res) => {
+  try {
+    const { name, phone, dname, email, password, npassword, cpassword } =
+      req.body;
+    const userId = req.loggedInUser.id;
+
+    const db = await connectDB(process.env.DATABASE);
+    const user = await db
+      .collection(collection.USERS_COLLECTION)
+      .findOne({ userId });
+    // console.log(">>>>>>>>user",user)
+    if (!user) {
+      return res.render("user/account-details", {
+        title: "Account Details",
+        error: "User not found.",
+      });
+    }
+
+    // ✅ Verify current password
+    const isCurrentPasswordValid = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isCurrentPasswordValid) {
+      return res.render("user/account-details", {
+        title: "Account Details",
+        error: "Current password is incorrect.",
+        user,
+      });
+    }
+
+    // ✅ Handle new password (optional)
+    let hashedPassword = user.password;
+    if (npassword || cpassword) {
+      if (npassword !== cpassword) {
+        return res.render("user/account-details", {
+          title: "Account Details",
+          error: "New password and confirm password do not match.",
+          user,
+        });
+      }
+      hashedPassword = await bcrypt.hash(npassword, 10);
+    }
+
+    // ✅ Update user details
+    await db.collection(collection.USERS_COLLECTION).updateOne(
+      { userId },
+      {
+        $set: { name, phone, dname, email, password: hashedPassword },
+      }
+    );
+
+    const updatedUser = { ...user, name, phone, dname, email };
+    res.render("user/account-details", {
+      title: "Account Details",
+      success: "Account updated successfully!",
+      user: updatedUser,
+    });
+
+    console.log(updatedUser)
+
+  } catch (err) {
+    // console.error(err);
+    res.render("user/account-details", {
+      title: "Account Details",
+      error: "Something went wrong. Please try again later.",
+      user: req.body,
+    });
+  }
+};
+
+export const addToWishlist = async (req, res) => {
+  try {
+    const userId = req.loggedInUser?.id;
+    const { booksId } = req.body;
+
+    if (!userId) return res.redirect("/login");
+
+    const db = await connectDB(process.env.DATABASE);
+
+    // Fetch user
+    const user = await db
+      .collection(collection.USERS_COLLECTION)
+      .findOne({ userId });
+
+    // Fetch book details
+    const book = await db
+      .collection(collection.BOOKS_COLLECTION)
+      .findOne({ booksId });
+
+    if (!book) return res.redirect("/wishlist");
+
+    // Check if already exists
+    const exists = user.wishlist?.find(
+      (item) => item.booksId === booksId
+    );
+
+
+    if (!exists) {
+      const wishlistItem = {
+        booksId,
+        title: book.title,
+        shortDesc: book.shortDesc,
+        price: Number(book.discountPrice || book.regularPrice),
+        image: book.images?.[0] || "/img/default.png",
+        publisher: book.publisher,
+        addedAt: new Date(),
+      };
+
+      await db
+        .collection(collection.USERS_COLLECTION)
+        .updateOne(
+          { userId },
+          { $push: { wishlist: wishlistItem } }
+        );
+    }
+
+    res.redirect("/wishlist");
+  } catch (err) {
+    console.log("Wishlist Error:", err);
+    res.redirect("/wishlist");
+  }
+};
+
+export const removeFromWishlist = async (req, res) => {
+  try {
+    let userId = req.loggedInUser?.id;
+    const { booksId } = req.body;
+
+    const db = await connectToDatabase(process.env.DATABASE);
+    await db
+      .collection(collection.USERS_COLLECTION)
+      .updateOne({ userId }, { $pull: { wishlist: { booksId } } });
+
+    res.redirect("/wishlist");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/wishlist");
+  }
+};
+
+export const getWishlistPage = async (req, res) => {
+  try {
+    const userId = req.loggedInUser?.id;
+    if (!userId) return res.redirect("/login");
+
+    const db = await connectDB(process.env.DATABASE);
+    const user = await db
+      .collection(collection.USERS_COLLECTION)
+      .findOne({ userId });
+
+    const wishlistItems = user?.wishlist || [];
+    if (!wishlistItems.length)
+      return res.render("user/wishlist", { wishlist: [] });
+
+    const booksIds = wishlistItems.map(
+      (item) => new ObjectId(item.booksId)
+    );
+    const products = await db
+      .collection("products")
+      .find({ _id: { $in: booksIds } })
+      .toArray();
+
+    const wishlist = wishlistItems
+      .map((item) => {
+        const product = products.find(
+          (p) => p._id.toString() === item.booksId
+        );
+        if (!product) return null; // skip if product deleted
+
+        return {
+          booksId: item.booksId,
+          title: product.title,
+          publisher: product.publisher,
+          price: product.discountPrice || product.price, // numeric
+          image:
+            product.image?.[0] || "/userAssets/imgs/default-product.png",
+          shortDesc: product.shortDesc || "",
+          inStock: product.stock > 0,
+        };
+      })
+      .filter(Boolean);
+
+    // console.log("Wishlist to render:", wishlist);
+    res.render("user/wishlist", { wishlist });
+  } catch (err) {
+    // console.error(err);
+    res.redirect("/");
+  }
+};
+
+
+
+
+
+
+
 

@@ -1,17 +1,22 @@
 import { Router } from "express";
 import {
   addToCart,
+  addToWishlist,
   booksPage,
   cartPage,
   checkoutPage,
   clearCart,
   createAddress,
+  getAccount,
+  getOrderHistory,
+  getWishlistPage,
   homePage,
   loginPage,
   orderSuccess,
   placeOrder,
   removeFromCart,
   signupPage,
+  updateAccount,
 } from "../controllers/userController.js";
 import { createUser, loginUser } from "../controllers/userAuth.js";
 import { redirectIfLoggedIn } from "../middleware/redirectIfLoggedIn.js";
@@ -53,7 +58,20 @@ userRoutes.post("/place-order", placeOrder);
 
 userRoutes.get("/order-success", orderSuccess);
 
+userRoutes.get("/order-history", requireAuth, getOrderHistory);
 
+userRoutes.get("/account-details", requireAuth, getAccount);
+
+userRoutes.post("/account-details", requireAuth, updateAccount)
+
+//whishlist
+// GET wishlist page
+
+userRoutes.get("/wishlist", requireAuth, getWishlistPage);
+
+userRoutes.post("/add-to-wishlist", requireAuth, addToWishlist);
+
+// userRoutes.post("/remove-from-wishlist", requireAuth, removeFromWishlist);
 
 
 export default userRoutes;

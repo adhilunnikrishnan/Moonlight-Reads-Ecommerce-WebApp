@@ -44,7 +44,7 @@
 
             <div class="col-md-6 text-md-end mt-3 mt-md-0">
               <h6 class="fw-bold text-muted">Order Summary</h6>
-              <p class="mb-1">Items: {{this.cart.length}}</p>
+              <p class="mb-1">Items: {{this.userCart.length}}</p>
               <p class="mb-1 fw-semibold">Total Amount: <span class="text-success">₹{{this.totalAmount}}</span></p>
             </div>
           </div>
@@ -63,9 +63,9 @@
                 </tr>
               </thead>
               <tbody>
-                {{#each this.cart}}
+                {{#each this.userCart}}
                 <tr>
-                  <td class="fw-medium">{{this.name}}</td>
+                  <td class="fw-medium">{{this.title}}</td>
                   <td>{{this.publisher}}</td>
                   <td>{{this.quantity}}</td>
                   <td>₹{{this.price}}</td>
