@@ -4,11 +4,13 @@ import {
   booksPage,
   cartPage,
   checkoutPage,
+  clearCart,
   createAddress,
   homePage,
   loginPage,
   orderSuccess,
   placeOrder,
+  removeFromCart,
   signupPage,
 } from "../controllers/userController.js";
 import { createUser, loginUser } from "../controllers/userAuth.js";
@@ -38,7 +40,9 @@ userRoutes.get("/cart", requireAuth, cartPage);
 
 userRoutes.post("/add-to-cart", requireAuth, addToCart);
 
-// userRoutes.get("/cart/remove/:productId", removeFromCart); //remove selected product from cart
+userRoutes.get("/cart/clear", clearCart); //clear cart
+
+userRoutes.get("/cart/remove/:booksId", removeFromCart); //remove selected product from cart
 
 userRoutes.get("/checkout", checkoutPage);
 
