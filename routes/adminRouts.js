@@ -5,9 +5,12 @@ import {
   adminDashboardPage,
   adminLoginPage,
   adminLogout,
+  adminOrderDetailsPage,
+  adminOrdersListPage,
   // adminOrdersListPage,
   blockUnblockUser,
   bookListPage,
+  updateOrderStatus,
   usersListPage,
 } from "../controllers/adminController.js";
 import { adminLogin } from "../controllers/adminAuth.js";
@@ -51,6 +54,12 @@ adminRoutes.post("/books/:id/delete", deleteBook)
 
 adminRoutes.post("/block-user/:id", blockUnblockUser);
 
-// adminRoutes.get("/orders-list",adminOrdersListPage);
+adminRoutes.get("/orders-list",adminOrdersListPage);
+
+adminRoutes.get("/update-order-status/:id/:status", updateOrderStatus);
+
+
+adminRoutes.get("/orders/:id", adminOrderDetailsPage);
+
 
 export default adminRoutes;
