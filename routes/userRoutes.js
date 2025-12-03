@@ -18,7 +18,7 @@ import {
   signupPage,
   updateAccount,
 } from "../controllers/userController.js";
-import { createUser, loginUser } from "../controllers/userAuth.js";
+import { createUser, loginUser, logout } from "../controllers/userAuth.js";
 import { redirectIfLoggedIn } from "../middleware/redirectIfLoggedIn.js";
 import { noCache } from "../middleware/noCache.js";
 import { requireAuth } from "../middleware/requireAuth.js";
@@ -35,6 +35,9 @@ userRoutes.get("/signup", noCache, redirectIfLoggedIn, signupPage);
 userRoutes.post("/login-user", loginUser);
 
 userRoutes.post("/create-user", createUser);
+
+userRoutes.get("/logout", logout);
+
 
 userRoutes.get("/books", booksPage);
 
