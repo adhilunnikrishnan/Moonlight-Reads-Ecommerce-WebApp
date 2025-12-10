@@ -657,6 +657,66 @@ export const updateAccount = async (req, res) => {
   }
 };
 
+export const getWishlistPage = async (req, res) => {
+  // console.log(">>>>>>wishlist page function called");
+  try {
+    const userId = req.loggedInUser?.id;
+    console.log(">>>>>userId", userId);
+
+    if (!userId) return res.redirect("/login");
+
+    const db = await connectDB(process.env.DATABASE);
+
+    const user = await db
+      .collection(collection.USERS_COLLECTION)
+      .findOne({ userId });
+
+    const wishlistItems = user?.wishlist || [];
+
+    if (!wishlistItems.length)
+      return res.render("user/wishlist", { wishlist: [] });
+
+    // Extract booksIds as strings (UUIDs, not ObjectIds)
+    const booksIds = wishlistItems.map((item) => item.booksId);
+
+    // Query using string UUIDs instead of ObjectIds
+    const products = await db
+      .collection(collection.BOOKS_COLLECTION)
+      .find({ booksId: { $in: booksIds } })
+      .toArray();
+
+    const wishlist = wishlistItems
+      .map((item) => {
+        const product = products.find(
+          (p) => p.booksId === item.booksId // Compare as strings
+        );
+        if (!product) {
+          console.log("⚠ Book deleted from DB:", item.booksId);
+          return null;
+        }
+
+        return {
+          booksId: item.booksId,
+          title: product.title,
+          publisher: product.publisher,
+          price: product.discountPrice || product.price,
+          image: product.images?.[0],
+          shortDesc: product.shortDesc || "",
+          inStock: product.stock > 0,
+        };
+      })
+      .filter(Boolean);
+
+    res.render("user/wishlist", { title: "Your Wishlist", wishlist });
+
+  } catch (err) {
+    console.error("❌ Wishlist Page Error:", err);
+    res.redirect("/");
+  }
+};
+
+
+
 export const addToWishlist = async (req, res) => {
   try {
     const userId = req.loggedInUser?.id;
@@ -712,70 +772,38 @@ export const addToWishlist = async (req, res) => {
 
 export const removeFromWishlist = async (req, res) => {
   try {
-    let userId = req.loggedInUser?.id;
-    const { booksId } = req.body;
+    const userId = req.loggedInUser?.id;
+    console.log(">>>> userId:", userId);
 
-    const db = await connectToDatabase(process.env.DATABASE);
-    await db
+    if (!userId) return res.redirect("/login");
+
+    const { booksId } = req.body;
+    if (!booksId) {
+      console.log("❌ No booksId provided to removeFromWishlist");
+      return res.redirect("/wishlist");
+    }
+
+    const db = await connectDB(process.env.DATABASE);
+
+    const result = await db
       .collection(collection.USERS_COLLECTION)
-      .updateOne({ userId }, { $pull: { wishlist: { booksId } } });
+      .updateOne(
+        { userId },
+        { $pull: { wishlist: { booksId: booksId } } }
+      );
+
+    if (result.modifiedCount === 0) {
+      console.log("⚠ Book was not in wishlist:", booksId);
+    }
 
     res.redirect("/wishlist");
   } catch (error) {
-    console.log(error);
+    console.log("❌ Error Removing Wishlist Item:", error);
     res.redirect("/wishlist");
   }
 };
 
-export const getWishlistPage = async (req, res) => {
-  try {
-    const userId = req.loggedInUser?.id;
-    if (!userId) return res.redirect("/login");
 
-    const db = await connectDB(process.env.DATABASE);
-    const user = await db
-      .collection(collection.USERS_COLLECTION)
-      .findOne({ userId });
-
-    const wishlistItems = user?.wishlist || [];
-    if (!wishlistItems.length)
-      return res.render("user/wishlist", { wishlist: [] });
-
-    const booksIds = wishlistItems.map(
-      (item) => new ObjectId(item.booksId)
-    );
-    const products = await db
-      .collection("products")
-      .find({ _id: { $in: booksIds } })
-      .toArray();
-
-    const wishlist = wishlistItems
-      .map((item) => {
-        const product = products.find(
-          (p) => p._id.toString() === item.booksId
-        );
-        if (!product) return null; // skip if product deleted
-
-        return {
-          booksId: item.booksId,
-          title: product.title,
-          publisher: product.publisher,
-          price: product.discountPrice || product.price, // numeric
-          image:
-            product.image?.[0] || "/userAssets/imgs/default-product.png",
-          shortDesc: product.shortDesc || "",
-          inStock: product.stock > 0,
-        };
-      })
-      .filter(Boolean);
-
-    // console.log("Wishlist to render:", wishlist);
-    res.render("user/wishlist", { wishlist });
-  } catch (err) {
-    // console.error(err);
-    res.redirect("/");
-  }
-};
 
 
 

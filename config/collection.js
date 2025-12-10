@@ -4,7 +4,6 @@ let collection = {
   CART_COLLECTION: "cart",
   ORDERS_COLLECTION: "orders",
   WISHLIST_COLLECTION: "wishlist",
-  PUBLISHERS_COLLECTION: "publishers",
 };
 
 export default collection;

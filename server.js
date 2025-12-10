@@ -29,12 +29,12 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
 app.use(cookieParser());
 
-
 app.use(cors());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-
-// app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 app.use(compression());
 
 /* STATIC FILES */
@@ -91,7 +91,7 @@ app.use((req, res, next) => {
 /* ROUTES */
 app.use("/admin", adminRoutes);
 
-app.use("/", userRoutes)
+app.use("/", userRoutes);
 // app.use(errorHandler); // if needed
 
 /* START SERVER */

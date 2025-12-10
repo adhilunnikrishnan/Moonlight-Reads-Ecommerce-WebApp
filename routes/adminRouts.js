@@ -7,7 +7,6 @@ import {
   adminLogout,
   adminOrderDetailsPage,
   adminOrdersListPage,
-  // adminOrdersListPage,
   blockUnblockUser,
   bookListPage,
   updateOrderStatus,
@@ -20,6 +19,8 @@ import {
   editBookDetails,
   editBookDetailsPage,
 } from "../controllers/booksController.js";
+
+
 
 const adminRoutes = Router({ mergeParams: true });
 
@@ -60,6 +61,5 @@ adminRoutes.get("/update-order-status/:id/:status", updateOrderStatus);
 
 
 adminRoutes.get("/orders/:id", adminOrderDetailsPage);
-
 
 export default adminRoutes;

@@ -15,6 +15,7 @@ import {
   orderSuccess,
   placeOrder,
   removeFromCart,
+  removeFromWishlist,
   signupPage,
   updateAccount,
 } from "../controllers/userController.js";
@@ -74,7 +75,7 @@ userRoutes.get("/wishlist", requireAuth, getWishlistPage);
 
 userRoutes.post("/add-to-wishlist", requireAuth, addToWishlist);
 
-// userRoutes.post("/remove-from-wishlist", requireAuth, removeFromWishlist);
+userRoutes.post("/remove-from-wishlist", requireAuth, removeFromWishlist);
 
 
 export default userRoutes;

@@ -1,0 +1,100 @@
+<main class="main">
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    {{#if wishlist.length}}
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th colspan="2">Product</th>
+                                    <th>Price</th>
+                                    <th>Stock Status</th>
+                                    <th>Action</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {{#each wishlist}}
+                                <tr>
+
+                                    <!-- IMAGE -->
+                                    <td class="image product-thumbnail">
+                                        <img src="{{this.image}}" alt="{{this.title}}">
+                                    </td>
+
+                                    <!-- TITLE & DESCRIPTION -->
+                                    <td class="product-des product-name">
+                                        <h5 class="product-name">
+                                            <a href="/bookview?id={{this.booksId}}">
+                                                {{this.title}}
+                                            </a>
+                                        </h5>
+                                        <p class="font-xs">{{this.shortDesc}}</p>
+                                    </td>
+
+                                    <!-- PRICE -->
+                                    <td class="price" data-title="Price">
+                                        <span>₹{{this.price}}</span>
+                                    </td>
+
+                                    <!-- STOCK -->
+                                    <td data-title="Stock">
+                                        {{#if this.inStock}}
+                                            <span class="color3 font-weight-bold">In Stock</span>
+                                        {{else}}
+                                            <span class="text-danger font-weight-bold">Out of Stock</span>
+                                        {{/if}}
+                                    </td>
+
+                                    <!-- ADD TO CART -->
+                                    <td data-title="Cart">
+                                        <form action="/add-to-cart" method="POST">
+                                            <input type="hidden" name="productId" value="{{this.booksId}}">
+                                            <input type="hidden" name="name" value="{{this.title}}">
+                                            <input type="hidden" name="brand" value="{{this.publisher}}">
+                                            <input type="hidden" name="price" value="{{this.price}}">
+                                            <input type="hidden" name="image" value="{{this.image}}">
+                                            <input type="hidden" name="quantity" value="1">
+
+                                            <button class="btn btn-sm" {{#unless this.inStock}}disabled{{/unless}}>
+                                                <i class="fi-rs-shopping-bag mr-5"></i>
+                                                Add to cart
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                    <!-- REMOVE -->
+                                    <td class="action" data-title="Remove">
+                                        <form action="/remove-from-wishlist" method="POST">
+                                            <input type="hidden" name="booksId" value="{{this.booksId}}">
+                                            <button type="submit" class="btn btn-link text-danger">
+                                                <i class="fi-rs-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{else}}
+                    <!-- EMPTY WISHLIST -->
+                    <div class="text-center mt-50">
+                        <h3>Your wishlist is empty!</h3>
+                        <a href="/products" class="btn btn-brand mt-3">
+                            Browse Products
+                        </a>
+                    </div>
+                    {{/if}}
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
