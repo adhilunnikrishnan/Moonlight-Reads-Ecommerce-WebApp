@@ -77,6 +77,7 @@ const getStockStatus = (product) => {
 };
 
 export const booksPage = async (req, res) => {
+  console.log(">>>>>>>>books page fuction called")
   try {
     // Get logged-in user from JWT
     let user = null;
@@ -101,11 +102,12 @@ export const booksPage = async (req, res) => {
       ...book,
       stockStatus: getStockStatus(book.stock), // book.stock is a STRING → handled below
     }));
+    console.log(">>>>>>>>>books sotct ", booksWithStock)
 
     // Render the UI
     res.render("user/books", {
       title: "Books List",
-      products: booksWithStock, // HBS expects "products"
+      books: booksWithStock, // HBS expects "products"
       user,
     });
   } catch (error) {
