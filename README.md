@@ -75,7 +75,7 @@ Moonlight Reads is built to deliver a modern e-commerce experience specifically 
 The project is hosted on **Render**.
 
 ### 🔗 Live Links
-- **User Panel:** [Moonlight Reads User]()  
+- **User Panel:** [Moonlight Reads User](https://moonlight-reads-ecommerce-web-app.vercel.app/)  
 - **Admin Panel:** [Moonlight Reads Admin]()  
 
 **Admin Credentials:**  
@@ -88,7 +88,7 @@ The project is hosted on **Render**.
 
 | Home Page | Product Page | Cart | Admin Dashboard |
 |-----------|--------------|------|----------------|
-| ![Home Page](public/screenshot/home.jpg) | ![Product Page](public/screenshot/products.jpg) | ![Cart](public/screenshot/cart.jpg) | ![Admin Dashboard](public/screenshot/admin%20dashboard.jpg) |
+| ![Home Page](public/screenshot/homepage.png) | ![Product Page](public/screenshot/bookspage.png) | ![Cart](public/screenshot/cartpage.png) | ![Admin Dashboard](public/screenshot/dashboard.png) |
 
 ---
 
@@ -97,8 +97,8 @@ The project is hosted on **Render**.
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/shasbinas/ChronoRoyale-Ecommerce-WebApp.git
-cd ChronoRoyale-Ecommerce-WebApp
+git clone https://github.com/adhilunnikrishnan/Moonlight-Reads-Ecommerce-WebApp.git
+cd Moonlight-Reads-Ecommerce-WebApp
 ```
 
 ### 2️⃣ Install dependencies
@@ -109,14 +109,38 @@ npm install
 
 ### 3️⃣ Create `.env` file
 
+## Instructions
+Copy this file to `.env` in your project root and replace all values in `<>` with your actual configuration.
+
+## Configuration
 ```env
+# Server Configuration
 PORT=9002
-DATABASE=ChronoRoyale
-MONGO_DB_URI="your_mongodb_connection_string"
-JWT_SECRET=your_secret_key
-ADMIN_EMAIL=admin
-ADMIN_PASSWORD=123
+
+# Database Configuration
+DATABASE=<your_database_name>
+# Example: DATABASE=myapp_db
+
+# MongoDB Connection
+MONGO_DB_URI="<your_mongodb_connection_string>"
+# Example: MONGO_DB_URI="mongodb://localhost:27017/myapp_db"
+# Example (MongoDB Atlas): MONGO_DB_URI="mongodb+srv://username:password@cluster.mongodb.net/myapp_db"
+
+# JWT Authentication
+JWT_SECRET=<your_jwt_secret_key>
+# Example: JWT_SECRET=my_super_secret_key_12345
+# Tip: Generate a secure random string for production
+
+# Admin Credentials
+ADMIN_EMAIL=<admin_email>
+# Example: ADMIN_EMAIL=admin@example.com
+
+ADMIN_PASSWORD=<admin_password>
+# Example: ADMIN_PASSWORD=SecurePass123!
+# Warning: Change this in production!
 ```
+
+
 
 ### 4️⃣ Start the server
 
