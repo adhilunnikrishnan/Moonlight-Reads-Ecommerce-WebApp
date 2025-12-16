@@ -116,20 +116,21 @@ export const booksPage = async (req, res) => {
 };
 
 export const loginPage = async (req, res) => {
-  // console.log("Login page route working 🚀");
+  console.log("Login page route working 🚀");
   try {
     res.render("user/login", { title: "Login - Moonligth Reads" });
   } catch (error) {
-    // console.log(error);
+    console.log("Login error:", error);
   }
 };
 
 export const signupPage = async (req, res) => {
+  console.log("Signup page route working 🚀");
   try {
     createUser;
     res.render("user/signup", { title: "Signup - Moonligth Reads" });
   } catch (error) {
-    // console.log(error);
+    console.log("Signup error:", error);
   }
 };
 
