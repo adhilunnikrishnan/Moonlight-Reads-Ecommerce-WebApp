@@ -50,7 +50,7 @@ export const homePage = async (req, res) => {
     console.log(user);
 
     res.render("user/homePage", {
-      title: "Home - Moonligth Reads",
+      title: "Home - Moonlight Reads",
       featuredBooks,
       newArrivals,
       comicBooks,
