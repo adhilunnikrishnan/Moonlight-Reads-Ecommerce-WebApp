@@ -8,7 +8,7 @@ import {
 } from "../helpers/chartHelper.js";
 
 export const adminLoginPage = async (req, res) => {
-  res.render("admin/adminLogin", { layout: "admin", title: "Admin Login" });
+  res.render("admin/adminlogin", { layout: "admin", title: "Admin Login" });
 };
 
 export const adminLogout = (req, res) => {
