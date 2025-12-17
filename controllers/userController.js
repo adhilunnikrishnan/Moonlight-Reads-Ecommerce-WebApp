@@ -118,7 +118,7 @@ export const booksPage = async (req, res) => {
 export const loginPage = async (req, res) => {
   // console.log("Login page route working 🚀");
   try {
-    res.render("user/login", { title: "Login - Moonligth Reads" });
+    res.render("user/login", { title: "Login - Moonlight Reads" });
   } catch (error) {
     // console.log(error);
   }
@@ -127,7 +127,7 @@ export const loginPage = async (req, res) => {
 export const signupPage = async (req, res) => {
   try {
     createUser;
-    res.render("user/signup", { title: "Signup - Moonligth Reads" });
+    res.render("user/signup", { title: "Signup - Moonlight Reads" });
   } catch (error) {
     // console.log(error);
   }
