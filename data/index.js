@@ -55,7 +55,7 @@ export const publishersData = [
   },
   {
     name: "HarperCollins",
-    image: "/userAssets/imgs/Logos/harpercollins.png",
+    image: "/userAssets/imgs/Logos/harperCollins.png",
     link: "/shop-grid-right.html",
   },
   {
