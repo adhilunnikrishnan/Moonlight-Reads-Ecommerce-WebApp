@@ -306,7 +306,7 @@ export const checkoutPage = async (req, res) => {
     const total = userCart.reduce((acc, item) => acc + item.total, 0);
 
     res.render("user/checkoutPage", {
-      title: "Checkout",
+      title: "CheckoutPage",
       userCart,
       total,
       addresses, // ✅ Pass to HBS
@@ -364,7 +364,7 @@ export const createAddress = async (req, res) => {
     }
 
     // console.log("✅ Address added successfully. Redirecting...");
-    res.redirect("/user/checkoutPage");
+    res.redirect("/checkout");
   } catch (error) {
     // console.error("🔥 Error creating address:", error);
     res.status(500).send("Internal Server Error");
