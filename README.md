@@ -1,7 +1,7 @@
 
 # 📕Moonlight Reads - Full Stack E-commerce WebApp
 
-> ChronoRoyale is a modern full-stack e-commerce platform designed for luxury watch sales. It provides a seamless shopping experience with secure authentication, cart and wishlist system, order management, and a powerful admin dashboard for analytics and inventory control.
+> Moonlight Reads is a modern full-stack e-commerce platform designed for luxury watch sales. It provides a seamless shopping experience with secure authentication, cart and wishlist system, order management, and a powerful admin dashboard for analytics and inventory control.
 
 <div>
   <img src="https://img.shields.io/badge/-HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
@@ -75,8 +75,8 @@ Moonlight Reads is built to deliver a modern e-commerce experience specifically 
 The project is hosted on **Render**.
 
 ### 🔗 Live Links
-- **User Panel:** [Moonlight Reads User](https://moonlight-reads-ecommerce-web-app.vercel.app/)  
-- **Admin Panel:** [Moonlight Reads Admin]()  
+- **User Panel:** [Moonlight Reads User](https://moonlight-reads.onrender.com/)  
+- **Admin Panel:** [Moonlight Reads Admin](https://moonlight-reads.onrender.com/admin)  
 
 **Admin Credentials:**  
 - Username: `admin`  
