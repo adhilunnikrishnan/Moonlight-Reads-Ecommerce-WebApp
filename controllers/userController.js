@@ -1,4 +1,5 @@
 import { getBooksData } from "./booksController.js";
+import { getStockStatus } from "../helpers/productHelper.js";
 import { bannerData, publishersData } from "../data/index.js";
 import { createUser } from "./userAuth.js";
 import connectDB from "../config/db.js";
@@ -64,17 +65,6 @@ export const homePage = async (req, res) => {
   }
 };
 
-const getStockStatus = (product) => {
-  const stock = parseInt(product.stock, 10); // ensure number
-
-  if (stock > 20) {
-    return `🟢 Available (${stock})`;
-  } else if (stock > 0 && stock <= 20) {
-    return `🟠 Hurry up! Only ${stock} left`;
-  } else {
-    return `🔴 Currently unavailable`;
-  }
-};
 
 export const booksPage = async (req, res) => {
   // console.log(">>>>>>>>books page fuction called")
@@ -195,13 +185,14 @@ export const addToCart = async (req, res) => {
     const price = Number(product.discountPrice || product.regularPrice);
 
     // Check existing item
+    // Check existing item
     const existingItem = user.cart.find((item) => item.booksId === booksId);
 
     const currentQty = existingItem ? existingItem.quantity : 0;
 
     // Prevent adding more than stock
     if (currentQty + 1 > stock) {
-      return res.redirect(`/bookDetails?booksId=${booksId}&error=Out of stock`);
+      return res.redirect(`/bookview?id=${product._id}&error=Out of stock`);
     }
 
     if (existingItem) {
@@ -218,6 +209,7 @@ export const addToCart = async (req, res) => {
     } else {
       // Create new cart item
       const newItem = {
+        _id: product._id,
         booksId,
         title: product.title,
         price,

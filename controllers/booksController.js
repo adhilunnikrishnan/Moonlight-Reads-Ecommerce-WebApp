@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import collection from "../config/collection.js";
 import connectDB from "../config/db.js";
+import { getStockStatus } from "../helpers/productHelper.js";
 
 export const editBookDetailsPage = async (req, res) => {
   console.log(">>>>>>>>>>>detailofBook");
@@ -52,11 +53,11 @@ export const editBookDetails = async (req, res) => {
 };
 
 export const deleteBook = async (req, res) => {
-  console.log(">>>>>>>>>>>>deletebookFuntionCalled")
+  console.log(">>>>>>>>>>>>deletebookFuntionCalled");
 
   try {
     const bookId = req.params.id;
-console.log(bookId)
+    console.log(bookId);
     const db = await connectDB();
 
     await db
@@ -69,7 +70,6 @@ console.log(bookId)
     res.status(500).send("Failed to delete the book.");
   }
 };
-
 
 /**
  * Fetch books from the database with optional filters, sorting, and limit
@@ -89,6 +89,7 @@ export const getBooksData = async (options = {}) => {
     const filter = {};
     if (options.category) filter.category = options.category;
     if (options.publisher) filter.publisher = options.publisher;
+    if (options.excludeId) filter._id = { $ne: new ObjectId(options.excludeId) };
 
     let books;
 
@@ -125,7 +126,7 @@ export const getBooksData = async (options = {}) => {
 
 export const bookViewPage = async (req, res) => {
   try {
-  console.log(">>>>>>>bookview")
+    console.log(">>>>>>>bookview");
 
     const db = await connectDB(process.env.DATABASE);
 
@@ -147,16 +148,30 @@ export const bookViewPage = async (req, res) => {
       return res.status(404).send("Book not found");
     }
 
+    // Main product stock status
+    book.stockStatus = getStockStatus(book.stock);
+
+    const relatedProducts = await getBooksData({
+      sort: "random",
+      category: book.category,
+      excludeId: bookId,
+      limit: 4,
+    });
+
+    // Related products stock status
+    const updatedRelatedProducts = relatedProducts.map((product) => ({
+      ...product,
+      stockStatus: getStockStatus(product.stock),
+    }));
+
     return res.render("user/bookViewPage", {
       title: book.title,
       book,
+      stockStatus: book.stockStatus,
+      relatedBooks: updatedRelatedProducts,
     });
-
   } catch (error) {
     console.log("❌ Error in bookViewPage:", error);
     return res.status(500).send("Server error");
   }
 };
-
-
-
