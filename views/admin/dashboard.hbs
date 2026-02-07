@@ -1,14 +1,12 @@
 <section class="content-main">
   <!-- Header -->
-  <div
-    class="content-header d-flex justify-content-between align-items-center mb-4"
-  >
+  <div class="content-header d-flex justify-content-between align-items-center mb-4">
     <div>
       <h2 class="content-title card-title">Dashboard</h2>
       <p>Whole data about your business here</p>
     </div>
     <div>
-
+    
     </div>
   </div>
 
@@ -23,8 +21,8 @@
           </span>
           <div class="text">
             <h6 class="mb-1 card-title">Revenue</h6>
-            <span>₹{{totalRevenue}}</span>
-            <span class="text-sm">Shipping fees not included</span>
+            <span>₹{{stats.totalRevenueThisYear}}</span>
+            <span class="text-sm">Revenue generated this year</span>
           </div>
         </article>
       </div>
@@ -39,8 +37,8 @@
           </span>
           <div class="text">
             <h6 class="mb-1 card-title">Delivered Orders</h6>
-            <span>{{deliveredOrdersCount}}</span>
-            <span class="text-sm">Orders delivered this month</span>
+            <span>{{stats.deliveredOrdersThisYear}}</span>
+            <span class="text-sm">Orders delivered this year</span>
           </div>
         </article>
       </div>
@@ -54,9 +52,9 @@
             <i class="text-warning material-icons md-qr_code"></i>
           </span>
           <div class="text">
-            <h6 class="mb-1 card-title">Total Products</h6>
-            <span>{{totalproductCount}}</span>
-            <span class="text-sm">Total products listed in the site</span>
+            <h6 class="mb-1 card-title">Products Sold</h6>
+            <span>{{stats.productsSoldThisYear}}</span>
+            <span class="text-sm">Total products sold this year</span>
           </div>
         </article>
       </div>
@@ -71,49 +69,45 @@
           </span>
           <div class="text">
             <h6 class="mb-1 card-title">Total Users</h6>
-            <span>{{totalUsers}}</span>
-            <span class="text-sm">Users who placed orders this month</span>
+            <span>{{stats.totalUsersThisYear}}</span>
+            <span class="text-sm">Counts unique users who placed orders this year</span>
           </div>
         </article>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <!-- Sale Statistics (Line Chart) -->
-    <!-- Sale Statistics (Line Chart) -->
-    <div class="col-xl-8 col-lg-12">
-      <div class="card mb-4">
-        <article class="card-body">
-          <h5 class="card-title">Manga & Fiction Category Stats</h5>
-          <canvas
-            id="myChart"
-            height="120"
-            data-labels="{{{lineLabels}}}"
-            data-men="{{{mangaData}}}"
-            data-women="{{{fictionData}}}"
-          >
-          </canvas>
-        </article>
-      </div>
-    </div>
+<div class="row">
+  <!-- Sale Statistics (Line Chart) -->
+<div class="col-xl-8 col-lg-12">
+  <div class="card mb-4">
+    <article class="card-body">
+      <h5 class="card-title">Last Year Book Sales Statistics</h5>
+      <canvas
+        id="myChart"
+        height="120"
+        data-manga='{{{mangaData}}}'
+        data-comics='{{{comicsData}}}'>
+      </canvas>
+    </article>
+  </div>
+</div>
 
-    <!-- Order Status Donut Chart -->
-    <div class="col-xl-4 col-lg-12">
-      <div class="card mb-4">
-        <article class="card-body">
-          <h5 class="card-title">Order Status</h5>
-          <canvas
-            id="myChart2"
-            height="120"
-            data-labels="{{{donutLabels}}}"
-            data-values="{{{donutData}}}"
-          >
-          </canvas>
-        </article>
-      </div>
+  <!-- Order Status Donut Chart -->
+  <div class="col-xl-4 col-lg-12">
+    <div class="card mb-4">
+      <article class="card-body">
+        <h5 class="card-title">Last Year Orders Status</h5>
+        <canvas
+          id="myChart2"
+          height="120"
+          data-labels='{{{donutLabels}}}'
+          data-values='{{{donutData}}}'>
+        </canvas>
+      </article>
     </div>
   </div>
+</div>
 
   <!-- Pagination -->
   <div class="pagination-area mt-30 mb-50">
@@ -125,9 +119,7 @@
         <li class="page-item"><a class="page-link dot" href="#">...</a></li>
         <li class="page-item"><a class="page-link" href="#">16</a></li>
         <li class="page-item">
-          <a class="page-link" href="#"><i
-              class="material-icons md-chevron_right"
-            ></i></a>
+          <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
         </li>
       </ul>
     </nav>

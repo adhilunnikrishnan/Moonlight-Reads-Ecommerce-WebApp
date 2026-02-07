@@ -4,6 +4,7 @@ import collection from "../config/collection.js";
 import { ObjectId } from "mongodb";
 import {
   getDonutChartData,
+  getYearlyStats,
   getLineChartData,
 } from "../helpers/chartHelper.js";
 
@@ -31,79 +32,35 @@ export const adminLogout = (req, res) => {
 export const adminDashboardPage = async (req, res) => {
   try {
     const db = await connectDB(process.env.DATABASE);
-
     const now = new Date();
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    startOfMonth.setHours(0, 0, 0, 0);
 
-    // 1️⃣ Delivered Orders (This Month)
-    const deliveredOrdersCount = await db
-      .collection(collection.ORDERS_COLLECTION)
-      .countDocuments({
-        status: "Delivered",
-        createdAt: { $gte: startOfMonth, $lte: now },
-      });
+    // 1️⃣ Get yearly statistics
+    const stats = await getYearlyStats(db);
 
-    // 2️⃣ Revenue from Delivered Orders (This Month)
-    const revenueData = await db
-      .collection(collection.ORDERS_COLLECTION)
-      .aggregate([
-        {
-          $match: {
-            status: "Delivered",
-            createdAt: { $gte: startOfMonth, $lte: now },
-          },
-        },
-        { $group: { _id: null, totalRevenue: { $sum: "$total" } } },
-      ])
-      .toArray();
+    // 2️⃣ Get donut chart data (past 12 months)
+    const { labels: donutLabels, data: donutData } = await getDonutChartData(db);
 
-    const totalRevenue = revenueData[0]?.totalRevenue || 0;
-
-    // 3️⃣ Total Books
-    const totalproductCount = await db
-      .collection(collection.BOOKS_COLLECTION)
-      .countDocuments();
-
-    // 4️⃣ Total Users
-    const totalUsers = await db
-      .collection(collection.USERS_COLLECTION)
-      .countDocuments();
-
-    // 5️⃣ Users Who Ordered
-    const usersWhoOrdered = (
-      await db.collection(collection.ORDERS_COLLECTION).distinct("userId")
-    ).length;
-
-    // 6️⃣ Donut Chart (helper)
-    const { labels: donutLabels, data: donutData } =
-      await getDonutChartData(db, startOfMonth, now);
-
-    console.log("donutLabels<><><><><",donutLabels)
-    console.log("donutData",donutData)
-
-    // 7️⃣ Line Chart (helper)
-    const { last30Days, mangaData, fictionData } =
-      await getLineChartData(db, now);
+// 3️⃣ Get line chart data
+const { labels: lineChartLabels, mangaData, comicsData } = await getLineChartData(db);
 
     // Render dashboard
     res.render("admin/dashboard", {
       layout: "admin",
       title: "Admin Dashboard",
-      totalRevenue: totalRevenue.toFixed(2),
-      deliveredOrdersCount,
-      totalproductCount,
-      totalUsers,
-      usersWhoOrdered,
+      stats: {
+        totalRevenueThisYear: stats.totalRevenueThisYear.toFixed(2),
+        deliveredOrdersThisYear: stats.deliveredOrdersThisYear,
+        productsSoldThisYear: stats.productsSoldThisYear,
+        totalUsersThisYear: stats.totalUsersThisYear,
+      },
       donutLabels: JSON.stringify(donutLabels),
       donutData: JSON.stringify(donutData),
-      lineLabels: JSON.stringify(last30Days),
+      lineChartLabels: JSON.stringify(lineChartLabels),
       mangaData: JSON.stringify(mangaData),
-      fictionData: JSON.stringify(fictionData),
+      comicsData: JSON.stringify(comicsData),
     });
-
   } catch (error) {
+    console.error("Dashboard Error:", error);
     res.status(500).send("Something went wrong loading the dashboard.");
   }
 };
